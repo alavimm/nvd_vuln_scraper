@@ -86,8 +86,8 @@ if __name__ == "__main__":
     try:
         schema.validate(data)
         print(f"Input data after sanitization and validation:\nvendor: {vend}\nproduct: {prod}\nversion: {ver}")
+        main(vend, prod, ver)
 
     except SchemaError:
         print(f"Input validation error!")
 
-    main(vend, prod, ver)
