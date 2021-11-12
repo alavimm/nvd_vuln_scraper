@@ -34,14 +34,18 @@ def main(vendor, product, version):
 
     vuln_list = []
     cols = ["cve", "desc", "cvss"]
+    num_of_vulns_per_page = 20
 
     # get url
-    url = f"https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&search_type=all&isCpeNameSearch=false&cpe_vendor=cpe:/:{vendor}&cpe_product=cpe:/:{vendor}:{product}&cpe_version=cpe:/:{vendor}:{product}:{version}"
+    url = f"https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&search_type=all" \
+          f"&isCpeNameSearch=false&cpe_vendor=cpe:/:{vendor}&cpe_product=cpe:/:{vendor}:{product}" \
+          f"&cpe_version=cpe:/:{vendor}:{product}:{version}"
     driver.get(url)
     # print(url)
 
-    total_vulns = driver.find_element(by=By.XPATH, value='//*[@id="vulnerability-search-results-div"]/div[1]/div[2]/strong').text
-    total_pages = math.ceil(int(total_vulns)/20)
+    total_vulns = driver.find_element(by=By.XPATH,
+                                      value='//*[@id="vulnerability-search-results-div"]/div[1]/div[2]/strong').text
+    total_pages = math.ceil(int(total_vulns)/num_of_vulns_per_page)
 
     while True:
         try:
