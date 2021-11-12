@@ -58,7 +58,7 @@ def main(vendor, product, version):
                 vuln_list.append((cve.text, desc.text, cvss.text))
 
             current_page_number = driver.find_element(by=By.XPATH, value='//li[@class="active"]/a').text
-            print(f"{current_page_number} of {total_pages} pages fetched!")
+            print(f"{current_page_number} of {total_pages} pages were fetched!")
             # WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.LINK_TEXT, '>'))).click()
             driver.find_element(by=By.LINK_TEXT, value='>').click()
 
