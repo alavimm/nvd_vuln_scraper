@@ -19,6 +19,7 @@ def main(vendor, product, version):
 
     # chrome options
     options = webdriver.ChromeOptions()
+    options.headless = True
     options.add_argument("start-maximized")
     options.add_argument("disable-infobars")
     options.add_argument("--disable-extensions")
@@ -29,7 +30,8 @@ def main(vendor, product, version):
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
 
-    # driver.maximize_window()
+    vuln_list = []
+    cols = ["cve", "desc", "cvss"]
 
     while True:
         try:
@@ -39,9 +41,7 @@ def main(vendor, product, version):
 
             WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.XPATH, '//*[@id="refine-search-anchor"]')))
 
-            # get some fields and write them in the csv file
-            vuln_list = []
-            cols = ["cve", "desc", "cvss"]
+            # get some fields and write them in the a file
             cves = driver.find_elements(by=By.XPATH, value='//*[@id="row"]/table/tbody/tr/th')
             descs = driver.find_elements(by=By.XPATH, value='//*[@id="row"]/table/tbody/tr/td[1]')
             cvsses = driver.find_elements(by=By.XPATH, value='//*[@id="row"]/table/tbody/tr/td[2]')
@@ -51,24 +51,25 @@ def main(vendor, product, version):
 
             WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.LINK_TEXT, '>')))
             driver.find_element(by=By.LINK_TEXT, value=">").click()
-            # print("Next page!")
-
-        except WebDriverException:
-            print("Page load exception!")
-            break
+            print("Next page fetched!")
 
         except TimeoutException:
             print("Time out exception!")
+            driver.quit()
             break
 
-        finally:
+        except WebDriverException:
+            print("There is no any next page!")
             driver.quit()
+            break
 
-        df = pd.DataFrame(vuln_list, columns=cols)
-        # print(df)
+    driver.quit()
 
-        # df.to_csv("out.csv", sep='\t')
-        df.to_excel("out.xlsx", index=False)
+    df = pd.DataFrame(vuln_list, columns=cols)
+    # print(df)
+
+    # df.to_csv("out.csv", sep='\t')
+    df.to_excel("out.xlsx", index=False)
 
 
 if __name__ == "__main__":
