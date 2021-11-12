@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4ee77d6-d9db-4eae-a5b3-351f9dea88bd" name="Changes" comment="main file of repo">
+    <list default="true" id="f4ee77d6-d9db-4eae-a5b3-351f9dea88bd" name="Changes" comment="some bugs fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nvd_scraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/nvd_scraper.py" afterDir="false" />
     </list>
@@ -109,7 +109,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636728034062</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="some bugs fix">
+      <created>1636738564223</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1636738564223</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -127,6 +134,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="main file of repo" />
-    <option name="LAST_COMMIT_MESSAGE" value="main file of repo" />
+    <MESSAGE value="some bug fix" />
+    <MESSAGE value="some bugs fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="some bugs fix" />
   </component>
 </project>

@@ -3,6 +3,7 @@ Vulnerability scrapper
 nvd database vulnerabilities extractor based on vendor and product and version required by user.
 """
 
+import time
 import bleach
 import pandas as pd
 from selenium import webdriver
@@ -19,7 +20,7 @@ def main(vendor, product, version):
 
     # chrome options
     options = webdriver.ChromeOptions()
-    options.headless = True
+    # options.headless = True
     options.add_argument("start-maximized")
     options.add_argument("disable-infobars")
     options.add_argument("--disable-extensions")
@@ -33,14 +34,13 @@ def main(vendor, product, version):
     vuln_list = []
     cols = ["cve", "desc", "cvss"]
 
+    # get url
+    url = f"https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&search_type=all&isCpeNameSearch=false&cpe_vendor=cpe:/:{vendor}&cpe_product=cpe:/:{vendor}:{product}&cpe_version=cpe:/:{vendor}:{product}:{version}"
+    driver.get(url)
+    # print(url)
+
     while True:
         try:
-            # get url
-            url = f"https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&search_type=all&isCpeNameSearch=false&cpe_vendor=cpe:/:{vendor}&cpe_product=cpe:/:{vendor}:{product}&cpe_version=cpe:/:{vendor}:{product}:{version}"
-            driver.get(url)
-
-            WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.XPATH, '//*[@id="refine-search-anchor"]')))
-
             # get some fields and write them in the a file
             cves = driver.find_elements(by=By.XPATH, value='//*[@id="row"]/table/tbody/tr/th')
             descs = driver.find_elements(by=By.XPATH, value='//*[@id="row"]/table/tbody/tr/td[1]')
@@ -49,8 +49,7 @@ def main(vendor, product, version):
             for (cve, desc, cvss) in (zip(cves, descs, cvsses)):
                 vuln_list.append((cve.text, desc.text, cvss.text))
 
-            WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.LINK_TEXT, '>')))
-            driver.find_element(by=By.LINK_TEXT, value=">").click()
+            WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.LINK_TEXT, '>'))).click()
             print("Next page fetched!")
 
         except TimeoutException:
@@ -88,6 +87,7 @@ if __name__ == "__main__":
         schema.validate(data)
         print(f"Input data after sanitization and validation:\nvendor: {vend}\nproduct: {prod}\nversion: {ver}")
         main(vend, prod, ver)
+        # main('google', 'android', '11.0')
 
     except SchemaError:
         print(f"Input validation error!")
