@@ -4,6 +4,7 @@ nvd database vulnerabilities extractor based on vendor and product and version r
 """
 
 import time
+import math
 import bleach
 import pandas as pd
 from selenium import webdriver
@@ -20,7 +21,7 @@ def main(vendor, product, version):
 
     # chrome options
     options = webdriver.ChromeOptions()
-    # options.headless = True
+    options.headless = True
     options.add_argument("start-maximized")
     options.add_argument("disable-infobars")
     options.add_argument("--disable-extensions")
@@ -39,6 +40,9 @@ def main(vendor, product, version):
     driver.get(url)
     # print(url)
 
+    total_vulns = driver.find_element(by=By.XPATH, value='//*[@id="vulnerability-search-results-div"]/div[1]/div[2]/strong').text
+    total_pages = math.ceil(int(total_vulns)/20)
+
     while True:
         try:
             # get some fields and write them in the a file
@@ -49,16 +53,13 @@ def main(vendor, product, version):
             for (cve, desc, cvss) in (zip(cves, descs, cvsses)):
                 vuln_list.append((cve.text, desc.text, cvss.text))
 
-            WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.LINK_TEXT, '>'))).click()
-            print("Next page fetched!")
-
-        except TimeoutException:
-            print("Time out exception!")
-            driver.quit()
-            break
+            current_page_number = driver.find_element(by=By.XPATH, value='//li[@class="active"]/a').text
+            print(f"{current_page_number} of {total_pages} pages fetched!")
+            # WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.LINK_TEXT, '>'))).click()
+            driver.find_element(by=By.LINK_TEXT, value='>').click()
 
         except WebDriverException:
-            print("There is no any next page!")
+            print("There is not any more pages!")
             driver.quit()
             break
 
