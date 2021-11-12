@@ -63,7 +63,8 @@ def main(vendor, product, version):
             driver.find_element(by=By.LINK_TEXT, value='>').click()
 
         except WebDriverException:
-            print("There is not any more pages!")
+            # No more pages
+            print("There are not any more pages!")
             driver.quit()
             break
 
