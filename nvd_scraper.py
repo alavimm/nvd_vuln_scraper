@@ -22,9 +22,13 @@ def main(vendor, product, version):
     # chrome options
     options = webdriver.ChromeOptions()
     options.headless = True
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
     options.add_argument("start-maximized")
-    options.add_argument("disable-infobars")
+    options.add_argument("--disable-infobars")
     options.add_argument("--disable-extensions")
+    options.add_argument("--disable-default-apps")
+    options.add_argument('--no-default-browser-check')
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--ignore-ssl-errors')
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
