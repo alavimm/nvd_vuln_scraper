@@ -1,7 +1,8 @@
 # nvd_vuln_scraper
 
-This is an python scraper that writen with python selenium library.
-It gives vendor name, product name and version of product that you want to catch it's vulnerabilities.
-Then this program gives you vulnerabilities published on nvd database for your given product.
+This is a Python scraper written with the Selenium Python library.
 
-Download it and enjoy!
+It takes the name of the vendor, the name of the product and the version of the product that you want to find the vulnerabilities of, 
+and then gives you the list of vulnerabilities published in the 'NVD' database for the product you want along with its' description and the risk.
+
+Download and enjoy!
